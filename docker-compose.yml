@@ -1,0 +1,22 @@
+version: "3"
+volumes:
+  data:
+services:
+  app:
+    build: .
+    ports:
+      - "9091:9091"
+    depends_on:
+      - db
+    env_file:
+      - .env
+  db:
+    image: mariadb
+    env_file:
+      - .env
+    volumes:
+      - data:/var/lib/mysql
+      - ./user.sql:/docker-entrypoint-initdb.d/user.sql
+      - ./userdatas.sql:/docker-entrypoint-initdb.d/userdatas.sql
+    ports:
+      - "3306:3306"

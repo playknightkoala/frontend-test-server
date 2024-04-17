@@ -1,6 +1,6 @@
 const loginService = require("../services/loginServices");
-exports.login = (request, response) => {
-  const responseData = loginService.login(request);
+exports.login = async (request, response) => {
+  const responseData = await loginService.login(request);
   if (responseData.status) {
     response.json(responseData);
   } else {

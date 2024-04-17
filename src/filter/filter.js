@@ -18,7 +18,11 @@ module.exports = async (request, response, next) => {
         .parseJWT(authorization)
         .then((payload) => {
           const content = payload.payload;
-          isValid = !isEmpty(content.account) && !isEmpty(content.accountName);
+          isValid =
+            !isEmpty(content.id) &&
+            !isEmpty(content.accountName) &&
+            !isEmpty(content.email) &&
+            !isEmpty(content.account);
         })
         .catch(() => {
           isValid = false;
