@@ -2,7 +2,7 @@ const responseDTO = require("../dto/responseDTO");
 const processJWT = require("../units/processJWT");
 const unit = require("../units/unit");
 
-const { isEmpty, ipFilter } = unit;
+const { isEmpty } = unit;
 
 module.exports = async (request, response, next) => {
   if (request.url.slice(0, 7) !== "/eduApi") {
