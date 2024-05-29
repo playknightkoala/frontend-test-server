@@ -13,6 +13,6 @@ memberRoutes(app);
 loginRoutes(app);
 chartRoutes(app);
 
-app.listen(9091, () => {
-  console.log("Listening on port 9091!");
+app.listen(6666, () => {
+  console.log("Listening on port 6666!");
 });
