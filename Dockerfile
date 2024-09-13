@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:22.8
 
 WORKDIR /frondend-test-server/
 

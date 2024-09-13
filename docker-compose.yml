@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
   db:
-    image: mariadb
+    image: mariadb:11.4.3
     env_file:
       - .env
     volumes:
@@ -19,7 +19,7 @@ services:
     ports:
       - "3306:3306"
   nginx:
-    image: nginx
+    image: nginx:1.27.1
     ports:
       - "9091:9091"
     volumes:
