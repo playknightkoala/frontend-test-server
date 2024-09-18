@@ -91,7 +91,7 @@ exports.updateMember = async (request) => {
     const userInfoStatement = [];
     const tokenInfo = await getTokenInfo(request);
 
-    if (isEmpty(userInfo) || isEmpty(id) || (tokenInfo.level !== "系統管理者" && tokenInfo.level !== "管理員")) {
+    if (isEmpty(userInfo) || isEmpty(id)) {
       return responseDTO.generalResponse(false, "發生嚴重錯誤！");
     }
 
@@ -105,17 +105,28 @@ exports.updateMember = async (request) => {
       return responseDTO.generalResponse(false, "發生嚴重錯誤！");
     }
 
-    if (userInfo.account === "admin") {
+    const queryMemberByIdResponse = await memberDAO.queryMemberById([id]);
+
+    if (queryMemberByIdResponse.response[0].level === 0 && tokenInfo.level === "管理者") {
       return responseDTO.generalResponse(false, "發生嚴重錯誤！");
     }
 
-    const queryMemberByIdResponse = await memberDAO.queryMemberById([id]);
+    if (queryMemberByIdResponse.response[0].level !== 2 && tokenInfo.level === "一般成員") {
+      return responseDTO.generalResponse(false, "發生嚴重錯誤！");
+    }
+
+    if (userInfo.account === "admin" && queryMemberByIdResponse.response[0].level !== 0) {
+      return responseDTO.generalResponse(false, "發生嚴重錯誤！");
+    }
+
     if (queryMemberByIdResponse.status && queryMemberByIdResponse.response.length === 0) {
       return responseDTO.generalResponse(false, "發生嚴重錯誤！");
     }
-    if (queryMemberByIdResponse.response[0].level === 0) {
+
+    if (queryMemberByIdResponse.response[0].level === 0 && userInfo.account !== "admin") {
       return responseDTO.generalResponse(false, "發生嚴重錯誤！");
     }
+
     const memberInfo = queryMemberByIdResponse.response[0];
 
     if (!isEmpty(userInfo.password) && memberInfo.password !== passwordToMD5Hash(userInfo.password)) {
